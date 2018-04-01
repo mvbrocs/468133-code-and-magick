@@ -40,7 +40,22 @@ window.renderStatistics = function (ctx, names, times) {
   drawCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)');
   drawCloud(ctx, CLOUD_X, CLOUD_Y, 'white');
 
-  ctx.fillStyle = 'red';
+
+  for (var i = 0; i < names.length; i++) {
+    if (names[i] === names.indexOf('Вы')) {
+      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    } else {
+      ctx.fillStyle = 'hsl(240, ' + (Math.random() * 100 + '%') + ', 50%)';
+    }
+  }
+
+
+  for (var i = 0; i < times.length; i++) {
+    var m = new Date();
+    m.getMilliseconds(times);
+  }
+
+
   var maxTime = getMaxElement(times);
   for (var i = 0; i < names.length; i++) {
     ctx.fillText(names[i], CLOUD_X + BAR_GAP + (BAR_GAP + BAR_WIDTH) * i, CLOUD_Y + FONT_GAP * 4);
