@@ -9,37 +9,30 @@ var coatsColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161
 var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
 
 
-var makeRandom = function (massiv, massiv2) {
+var makeRandom = function (massiv) {
   var randomValue = massiv[Math.floor(Math.random() * massiv.length)];
-  if (massiv2) {
-    randomValue += ' ' + massiv2[Math.floor(Math.random() * massiv2.length)];
-  }
   return randomValue;
 };
 
 
-var wizardObjects = [
-  {
-    name: makeRandom(names, surnames),
+var wizards = [];
+/*
+for (var i = 1; i < wizardsQuantity; i++) {
+  wizards[i] = wizards.push({
+    name: makeRandom(names) + ' ' + makeRandom(surnames),
     coatColor: makeRandom(coatsColors),
     eyesColor: makeRandom(eyesColors)
-  },
-  {
-    name: makeRandom(names, surnames),
+  });
+}
+*/
+
+for (var i = 0; i < wizardsQuantity; i++) {
+  wizards[i] = {
+    name: makeRandom(names) + ' ' + makeRandom(surnames),
     coatColor: makeRandom(coatsColors),
     eyesColor: makeRandom(eyesColors)
-  },
-  {
-    name: makeRandom(names, surnames),
-    coatColor: makeRandom(coatsColors),
-    eyesColor: makeRandom(eyesColors)
-  },
-  {
-    name: makeRandom(names, surnames),
-    coatColor: makeRandom(coatsColors),
-    eyesColor: makeRandom(eyesColors)
-  }
-];
+  };
+}
 
 var wizardsTemplate = document.querySelector('#similar-wizard-template')
     .content
@@ -47,15 +40,16 @@ var wizardsTemplate = document.querySelector('#similar-wizard-template')
 
 var wizardsList = document.querySelector('.setup-similar-list');
 
-for (var i = 0; i < wizardsQuantity; i++) {
+wizards.forEach(function (item) {
+
   var element = wizardsTemplate.cloneNode(true);
 
-  element.querySelector('.setup-similar-label').textContent = wizardObjects[i].name;
-  element.querySelector('.wizard-coat').style.fill = wizardObjects[i].coatColor;
-  element.querySelector('.wizard-eyes').style.fill = wizardObjects[i].eyesColor;
+  element.querySelector('.setup-similar-label').textContent = item.name;
+  element.querySelector('.wizard-coat').style.fill = item.coatColor;
+  element.querySelector('.wizard-eyes').style.fill = item.eyesColor;
 
   wizardsList.appendChild(element);
-}
+});
 
 var setupSimilar = document.querySelector('.setup-similar');
 setupSimilar.classList.remove('hidden');
