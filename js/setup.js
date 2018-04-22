@@ -42,7 +42,6 @@ wizards.forEach(function (item) {
 var setupSimilar = document.querySelector('.setup-similar');
 setupSimilar.classList.remove('hidden');
 
-
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 var setupBlock = document.querySelector('.setup');
@@ -59,6 +58,8 @@ var openPopup = function () {
 
 var closePopup = function () {
   setupBlock.classList.add('hidden');
+  setupBlock.style.top = '';
+  setupBlock.style.left = '';
 };
 
 setupOpenBlock.addEventListener('click', openPopup);
@@ -82,20 +83,6 @@ document.addEventListener('keydown', function (evt) {
     closePopup();
   }
 });
-
-
-var setupButton = document.querySelector('.setup-submit');
-setupButton.setAttribute('type', 'submit');
-var setupForm = document.querySelector('.setup-wizard-form');
-setupForm.setAttribute('action', 'https://js.dump.academy/code-and-magick');
-setupButton.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    setupForm.submit();
-  }
-});
-
-inputUserName.setAttribute('minlength', '2');
-
 
 var wizardEyesBlock = document.querySelector('.setup-wizard').querySelector('.wizard-eyes');
 var wizardEyesBlockInput = document.querySelector('.setup-wizard-appearance').querySelector('input[name="eyes-color"]');
