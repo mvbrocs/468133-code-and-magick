@@ -142,3 +142,4 @@ artifactsElement.addEventListener('dragleave', function (evt) {
   evt.target.style.backgroundColor = '';
   evt.preventDefault();
 });
+
