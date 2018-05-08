@@ -6,6 +6,7 @@
   var inputUserName = document.querySelector('.setup-user-name');
   var setupCloseButton = document.querySelector('.setup-close');
   var setupOpenIcon = document.querySelector('.setup-open-icon');
+  var formWizard = document.querySelector('.setup-wizard-form');
   var SETUPBLOCK_HEIGHT = 920;
   // var SETUPBLOCK_WIDTH = 799;
   setupOpenIcon.setAttribute('tabindex', '0');
@@ -90,4 +91,15 @@
       window.util.isEscPress(evt, closePopup);
     }
   });
+
+
+  formWizard.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.sendData(new FormData(formWizard),
+        function () {
+          setupBlock.classList.add('hidden');
+        },
+        function () {});
+  });
+
 })();

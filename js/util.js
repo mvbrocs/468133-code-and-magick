@@ -20,6 +20,16 @@ window.util = (function () {
       if (evt.keyCode === ENTER_KEYCODE) {
         action();
       }
+    },
+
+    shuffle: function (array) {
+      for (var i = 0; i < array.length; i++) {
+        var swapIdx = Math.floor(Math.random() * array.length);
+        var tmp = array[swapIdx];
+        array[swapIdx] = array[i];
+        array[i] = tmp;
+      }
+      return array;
     }
   };
 })();
