@@ -3,7 +3,7 @@
 (function () {
   var URL_TO_GET = 'https://js.dump.academy/code-and-magick/data';
   var URL_TO_POST = 'https://js.dump.academy/code-and-magick';
-  var TIMEOUT = 1000;
+  var TIMEOUT = 10000;
 
   var request = function (onSuccess, onError, url, method, data) {
     var xhr = new XMLHttpRequest();

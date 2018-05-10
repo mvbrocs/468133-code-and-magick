@@ -41,15 +41,7 @@
       if (setupBlock.offsetTop + SETUPBLOCK_HEIGHT > document.documentElement.clientHeight) {
         setupBlock.style.top = (document.documentElement.clientHeight - SETUPBLOCK_HEIGHT) + 'px';
       }
-      /*
-      if (setupBlock.offsetLeft + SETUPBLOCK_WIDTH > document.documentElement.clientWidth) {
-        setupBlock.style.left = (document.documentElement.clientWidth - SETUPBLOCK_WIDTH) + 'px';
-      }
 
-      if (setupBlock.offsetLeft - SETUPBLOCK_WIDTH < 0) {
-        setupBlock.style.left = (0 + SETUPBLOCK_WIDTH) + 'px';
-      }
-      */
       setupBlock.style.top = (setupBlock.offsetTop - shift.y) + 'px';
       setupBlock.style.left = (setupBlock.offsetLeft - shift.x) + 'px';
     };
