@@ -1,76 +1,56 @@
 'use strict';
 (function () {
-var COAT_COLORS = [ 'rgb(146, 100, 161)', 'rgb(215, 210, 55)', 'rgb(241, 43, 107)', 'rgb(101, 137, 164)', 'rgb(0, 0, 0)', 'rgb(215, 210, 55)', 'rgb(56, 159, 117)', 'rgb(241, 43, 107)'];
-var EYES_COLORS = ['red', 'orange', 'yellow', 'green', 'lightblue', 'blue', 'purple'];
-var wizards = [];
-var eyesColor;
-var coatColor;
-var wizardElement = document.querySelector('.setup-wizard');
-var wizardCoatElement = wizardElement.querySelector('.wizard-coat');
-var wizardEyesElement = wizardElement.querySelector('.wizard-eyes');
+  var wizards = [];
+  var eyesColor;
+  var coatColor;
 
-wizardCoatElement.addEventListener('click', function () {
-  var newColor = window.util.makeRandom(COAT_COLORS);
-  this.style.fill = newColor;
-  coatColor = newColor;
-  updateWizards();
-});
+  var getRank = function (wizard) {
+    var rank = 0;
 
+    if (wizard.colorCoat === coatColor) {
+      rank = rank + 2;
+    }
 
-wizardEyesElement.addEventListener('click', function () {
-  var newColor = window.util.makeRandom(EYES_COLORS);
-  this.style.fill = newColor;
-  eyesColor = newColor;
-  updateWizards();
-});
+    if (wizard.colorEyes === eyesColor) {
+      rank = rank + 1;
+    }
+    return rank;
+  };
 
+  var updateWizards = function () {
+    window.render.allWizards(wizards.sort(function (left, right) {
+      return getRank(right) - getRank(left);
+    }));
+  };
 
-var updateWizards = function () {
-
-  var sameCoatAndEyesWizards = wizards.filter(function (item) {
-    return item.colorCoat === coatColor && item.colorEyes === eyesColor;
+  window.wizard.onEyesChange = window.util.debounce(function (color) {
+    eyesColor = color;
+    updateWizards();
   });
 
-  var sameCoatWizards = wizards.filter(function(item) {
-    return item.colorCoat === coatColor;
+
+  window.wizard.onCoatChange = window.util.debounce(function (color) {
+    coatColor = color;
+    updateWizards();
   });
 
-  var sameEyesWizards = wizards.filter(function(item) {
-    return item.colorEyes === eyesColor;
-  })
 
-var filteredWizards = sameCoatAndEyesWizards;
-    filteredWizards = filteredWizards.concat(sameCoatWizards);
-    filteredWizards = filteredWizards.concat(sameEyesWizards);
-    filteredWizards = filteredWizards.concat(wizards);
+  var successHandler = function (data) {
+    wizards = data;
+    updateWizards();
+  };
 
-var uniqueWizards = filteredWizards.filter(function (item, i) {
-  return filteredWizards.indexOf(item) === i;
-})
+  var errorHandler = function (errorMsg) {
+    var errBlock = document.createElement('div');
+    errBlock.style = 'z-index:100; margin: 0 auto; text-align: center; background-color: red;';
+    errBlock.style.position = 'absolute';
+    errBlock.style.left = 0;
+    errBlock.style.rught = 0;
+    errBlock.style.fontSize = '30px';
+    errBlock.textContent = errorMsg;
+    document.body.insertAdjacentElement('afterbegin', errBlock);
+  };
 
-window.render.allWizards(uniqueWizards);
-}
-
-
-
-var successHandler = function (data) {
-  wizards = data;
-  updateWizards();
-};
-
-var errorHandler = function (errorMsg) {
-  var errBlock = document.createElement('div');
-  errBlock.style = 'z-index:100; margin: 0 auto; text-align: center; background-color: red;';
-  errBlock.style.position = 'absolute';
-  errBlock.style.left = 0;
-  errBlock.style.rught = 0;
-  errBlock.style.fontSize = '30px';
-  errBlock.textContent = errorMsg;
-  document.body.insertAdjacentElement('afterbegin', errBlock);
-};
-
-
-
-window.backend.getData(successHandler, errorHandler);
+  window.backend.getData(successHandler, errorHandler);
 
 })();

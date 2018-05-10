@@ -2,7 +2,6 @@
 (function () {
 
   var fireballs = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-  var wizardEyesBlock = document.querySelector('.setup-wizard').querySelector('.wizard-eyes');
   var wizardFireballBlock = document.querySelector('.setup-fireball-wrap');
 
   var draggedItem = null;
