@@ -5,6 +5,15 @@ var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'К
 var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupOpenIcon = setupOpen.querySelector('.setup-open-icon');
+var setupClose = setup.querySelector('.setup-close');
+var setupUserName = setup.querySelector('.setup-user-name');
+var setupUserNameIsFocus = false;
 
 var getRandomInt = function (min, max) {
   var res = Math.floor(Math.random() * (max - min)) + min;
@@ -20,9 +29,6 @@ var getRandomName = function () {
     return WIZARD_SURNAMES[getRandomInt(0, WIZARD_SURNAMES.length)] + ' ' + WIZARD_NAMES[getRandomInt(0, WIZARD_NAMES.length)];
   }
 };
-
-var setup = document.querySelector('.setup');
-setup.classList.remove('hidden');
 
 var createWizards = function () {
   var wizards = [];
@@ -72,3 +78,47 @@ var renderingWizards = function () {
 };
 
 renderingWizards();
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+};
+
+var onPopupEscPress = function (event) {
+
+  if (event.keyCode === ESC_KEYCODE) {
+
+    if (!setupUserNameIsFocus) {
+      setup.classList.add('hidden');
+    }
+  }
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+  document.addEventListener('keydown', onPopupEscPress);
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+  document.removeEventListener('keydown', onPopupEscPress);
+});
+
+setupOpenIcon.addEventListener('keydown', function (event) {
+
+  if (event.keyCode === ENTER_KEYCODE) {
+    openPopup();
+    document.addEventListener('keydown', onPopupEscPress);
+  }
+});
+
+setupUserName.addEventListener('focus', function () {
+  setupUserNameIsFocus = true;
+});
+
+setupUserName.addEventListener('blur', function () {
+  setupUserNameIsFocus = false;
+});
