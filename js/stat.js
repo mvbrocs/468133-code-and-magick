@@ -12,7 +12,6 @@ var getMaxValue = function (nums) {
   return max;
 };
 
-
 var renderStatistics = function (ctx, names, times) {
   ctx.globalCompositeOperation = 'destination-over';
 
@@ -24,7 +23,6 @@ var renderStatistics = function (ctx, names, times) {
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(...cloudCoordinates, cloudWidth, cloudHeight);
 
-
   // Draw cloud shadow
   var shadowOffset = 10;
   var shadowCoordinates = cloudCoordinates.map(function (elem) {
@@ -33,7 +31,6 @@ var renderStatistics = function (ctx, names, times) {
 
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.fillRect(...shadowCoordinates, cloudWidth, cloudHeight);
-
 
   ctx.globalCompositeOperation = 'source-over';
 
@@ -45,7 +42,6 @@ var renderStatistics = function (ctx, names, times) {
   ctx.font = '16px PT Mono';
   ctx.fillText('Ура вы победили!', ...textCoordinates);
   ctx.fillText('Список результатов:', ...nextLineTextCoordinates);
-
 
   // Draw chart
   var maxTime = getMaxValue(times) + 500;
