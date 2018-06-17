@@ -1,19 +1,13 @@
 'use strict';
 
-var WIZARDS_SUM = 4;
+var WIZARDS_NUM = 4;
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
-
-var setup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupOpenIcon = setupOpen.querySelector('.setup-open-icon');
-var setupClose = setup.querySelector('.setup-close');
-var setupUserName = setup.querySelector('.setup-user-name');
-var setupUserNameIsFocus = false;
 
 var getRandomInt = function (min, max) {
   var res = Math.floor(Math.random() * (max - min)) + min;
@@ -33,7 +27,7 @@ var getRandomName = function () {
 var createWizards = function () {
   var wizards = [];
 
-  for (var i = 0; i < WIZARDS_SUM; i++) {
+  for (var i = 0; i < WIZARDS_NUM; i++) {
     var wizard = {};
     wizard.name = getRandomName();
     wizard.coatColor = COAT_COLORS[getRandomInt(0, COAT_COLORS.length)];
@@ -51,7 +45,7 @@ var createWizardsTemplates = function () {
   var template = document.querySelector('#similar-wizard-template');
   var templateItem = template.content.querySelector('.setup-similar-item');
 
-  for (var i = 0; i < WIZARDS_SUM; i++) {
+  for (var i = 0; i < WIZARDS_NUM; i++) {
     var cloneItem = templateItem.cloneNode(true);
 
     var wizardName = cloneItem.querySelector('.setup-similar-label');
@@ -79,17 +73,11 @@ var renderingWizards = function () {
 
 renderingWizards();
 
-var openPopup = function () {
-  setup.classList.remove('hidden');
-};
+var setup = document.querySelector('.setup');
 
-var closePopup = function () {
-  setup.classList.add('hidden');
-};
+var onPopupEscPress = function (evt) {
 
-var onPopupEscPress = function (event) {
-
-  if (event.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === ESC_KEYCODE) {
 
     if (!setupUserNameIsFocus) {
       setup.classList.add('hidden');
@@ -97,23 +85,64 @@ var onPopupEscPress = function (event) {
   }
 };
 
+var setupWizardForm = setup.querySelector('.setup-wizard-form');
+var setupInputs = setup.querySelectorAll('input[required]');
+var setupSubmitBtn = setup.querySelector('.setup-submit');
+
+var onPopupSubmitBtnPress = function () {
+
+  for (var i = 0; i < setupInputs.length; i++) {
+    var input = setupInputs[i];
+
+    if (!input.valid) {
+      return;
+    }
+  }
+
+  setupWizardForm.submit();
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+  setupSubmitBtn.addEventListener('click', onPopupSubmitBtnPress);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+  setupSubmitBtn.removeEventListener('click', onPopupSubmitBtnPress);
+};
+
+var setupOpen = document.querySelector('.setup-open');
+var setupOpenIcon = setupOpen.querySelector('.setup-open-icon');
+
 setupOpen.addEventListener('click', function () {
   openPopup();
-  document.addEventListener('keydown', onPopupEscPress);
 });
+
+setupOpenIcon.addEventListener('keydown', function (evt) {
+
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+var setupClose = setup.querySelector('.setup-close');
 
 setupClose.addEventListener('click', function () {
   closePopup();
-  document.removeEventListener('keydown', onPopupEscPress);
 });
 
-setupOpenIcon.addEventListener('keydown', function (event) {
+setupClose.addEventListener('keydown', function (evt) {
 
-  if (event.keyCode === ENTER_KEYCODE) {
-    openPopup();
-    document.addEventListener('keydown', onPopupEscPress);
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
   }
 });
+
+var setupUserName = setup.querySelector('.setup-user-name');
+var setupUserNameIsFocus = false;
 
 setupUserName.addEventListener('focus', function () {
   setupUserNameIsFocus = true;
@@ -121,4 +150,58 @@ setupUserName.addEventListener('focus', function () {
 
 setupUserName.addEventListener('blur', function () {
   setupUserNameIsFocus = false;
+});
+
+var getIndexNextElement = function (array, currentElement) {
+  var indexCurrentElement = 0;
+
+  for (var i = 0; i < array.length; i++) {
+
+    if (currentElement === array[i]) {
+      indexCurrentElement = i;
+    }
+  }
+
+  ++indexCurrentElement;
+
+  if (indexCurrentElement === array.length) {
+    indexCurrentElement = 0;
+  }
+
+  return indexCurrentElement;
+};
+
+var setupPlayerWizardCoat = setup.querySelector('.setup-player .wizard-coat');
+
+var changeWizardCoatColor = function () {
+  var currentCoatColor = setupPlayerWizardCoat.style.fill;
+  setupPlayerWizardCoat.style.fill = COAT_COLORS[getIndexNextElement(COAT_COLORS, currentCoatColor)];
+};
+
+setupPlayerWizardCoat.addEventListener('click', function () {
+  changeWizardCoatColor();
+});
+
+var setupPlayerWizardEyes = setup.querySelector('.setup-player .wizard-eyes');
+
+var changeWizardEyesColor = function () {
+  var currentEyesColor = setupPlayerWizardEyes.style.fill;
+  setupPlayerWizardEyes.style.fill = EYES_COLORS[getIndexNextElement(EYES_COLORS, currentEyesColor)];
+}
+
+setupPlayerWizardEyes.addEventListener('click', function () {
+  changeWizardEyesColor();
+});
+
+var setupFireballWrap = setup.querySelector('.setup-fireball-wrap');
+var inputFireballColor = setupFireballWrap.querySelector('input');
+
+var changeFireballColor = function () {
+  var currentFireballColor = inputFireballColor.value;
+  setupFireballWrap.style.background = FIREBALL_COLORS[getIndexNextElement(FIREBALL_COLORS, currentFireballColor)];
+  inputFireballColor.value = FIREBALL_COLORS[getIndexNextElement(FIREBALL_COLORS, currentFireballColor)];
+};
+
+setupFireballWrap.addEventListener('click', function () {
+  changeFireballColor();
 });
