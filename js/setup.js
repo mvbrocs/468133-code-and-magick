@@ -6,21 +6,14 @@ var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', '�
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-var ENTER_KEYCODE = 13;
-var ESC_KEYCODE = 27;
-
-var getRandomInt = function (min, max) {
-  var res = Math.floor(Math.random() * (max - min)) + min;
-  return res;
-};
 
 var getRandomName = function () {
-  var nameIsFirst = getRandomInt(0, 2);
+  var nameIsFirst = window.util.getRandomInt(0, 2);
 
   if (nameIsFirst) {
-    return WIZARD_NAMES[getRandomInt(0, WIZARD_NAMES.length)] + ' ' + WIZARD_SURNAMES[getRandomInt(0, WIZARD_SURNAMES.length)];
+    return WIZARD_NAMES[window.util.getRandomInt(0, WIZARD_NAMES.length)] + ' ' + WIZARD_SURNAMES[window.util.getRandomInt(0, WIZARD_SURNAMES.length)];
   } else {
-    return WIZARD_SURNAMES[getRandomInt(0, WIZARD_SURNAMES.length)] + ' ' + WIZARD_NAMES[getRandomInt(0, WIZARD_NAMES.length)];
+    return WIZARD_SURNAMES[window.util.getRandomInt(0, WIZARD_SURNAMES.length)] + ' ' + WIZARD_NAMES[window.util.getRandomInt(0, WIZARD_NAMES.length)];
   }
 };
 
@@ -30,8 +23,8 @@ var createWizards = function () {
   for (var i = 0; i < WIZARDS_NUM; i++) {
     var wizard = {};
     wizard.name = getRandomName();
-    wizard.coatColor = COAT_COLORS[getRandomInt(0, COAT_COLORS.length)];
-    wizard.eyesColor = EYES_COLORS[getRandomInt(0, EYES_COLORS.length)];
+    wizard.coatColor = COAT_COLORS[window.util.getRandomInt(0, COAT_COLORS.length)];
+    wizard.eyesColor = EYES_COLORS[window.util.getRandomInt(0, EYES_COLORS.length)];
     wizards.push(wizard);
   }
 
@@ -72,35 +65,6 @@ var renderingWizards = function () {
 };
 
 renderingWizards();
-
-var setup = document.querySelector('.setup');
-
-var onPopupEscPress = function (evt) {
-
-  if (evt.keyCode === ESC_KEYCODE) {
-
-    if (!setupUserNameIsFocus) {
-      setup.classList.add('hidden');
-    }
-  }
-};
-
-var setupWizardForm = setup.querySelector('.setup-wizard-form');
-var setupInputs = setup.querySelectorAll('input[required]');
-var setupSubmitBtn = setup.querySelector('.setup-submit');
-
-var onPopupSubmitBtnPress = function () {
-
-  for (var i = 0; i < setupInputs.length; i++) {
-    var input = setupInputs[i];
-
-    if (!input.valid) {
-      return;
-    }
-  }
-
-  setupWizardForm.submit();
-};
 
 var openPopup = function () {
   setup.classList.remove('hidden');
